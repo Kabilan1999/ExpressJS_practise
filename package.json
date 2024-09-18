@@ -1,18 +1,19 @@
 {
   "name": "05tut",
   "version": "1.0.0",
-  "description": "Node.js Web Server tutorial",
+  "description": "Basic Node.jsi",
   "main": "server.js",
   "scripts": {
-    "start": "node web_server",
-    "dev": "nodemon web_server"
+    "start": "node app",
+    "dev": "nodemon app"
   },
-  "author": "Dave Gray",
+  "author": "Kabilan A S",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "date-fns": "^2.23.0",
     "express": "^4.21.0",
+    "mongoose": "^8.6.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

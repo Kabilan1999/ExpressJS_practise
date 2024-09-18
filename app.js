@@ -5,12 +5,14 @@ const PORT = process?.env?.PORT || 3500;
 const { logger } = require("./middleware/logEvents");
 const errorHandler = require("./middleware/errorHandler");
 const customCorsOptions = require("./config/corsOption");
+const connectToEmployeeDb = require("./config/db");
 const app = express();
 
 app.use(logger);
 app.use(cors(customCorsOptions));
 app.use(express.urlencoded({ extended: false })); // To handle form data
 app.use(express.json()); // To handle json data
+connectToEmployeeDb();
 app.use("/", express.static(path.join(__dirname, "./assets")));
 app.use("/employees", require("./routes/api/employees"));
 app.use("/", require("./routes/root"));
