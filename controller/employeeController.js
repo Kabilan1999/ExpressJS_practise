@@ -2,8 +2,14 @@ const employeeModel = require("../model/employeeSchema");
 
 const getAllEmployees = async (req, res) => {
   try {
-    const employees = await employeeModel.find();
-    res.json(employees);
+    let employees = await employeeModel.find();
+    const updatedEmployee = employees.map((doc) => {
+      return {
+        ...doc.toObject(),
+        fullName: doc.fullName, // Add a new field dynamically
+      };
+    });
+    res.json(updatedEmployee);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -16,6 +22,7 @@ const createNewEmployee = async (req, res) => {
         id: req.body.id,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        modifiedAt: Date.now(),
       };
       const employee = await employeeModel.findOneAndReplace(
         { id: req.body.id },
@@ -32,6 +39,7 @@ const createNewEmployee = async (req, res) => {
         id: employees?.length ? employees[employees.length - 1].id + 1 : 1,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        createdAt: Date.now(),
       });
       await newEmployee.save();
       res.status(201).json(newEmployee);
@@ -47,16 +55,8 @@ const updateEmployee = async (req, res) => {
       id: req.body.id,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
+      modifiedAt: Date.now(),
     };
-    if (
-      !updatedEmployee.firstname ||
-      !updatedEmployee.lastname ||
-      !updatedEmployee.id
-    ) {
-      return res
-        .status(400)
-        .json({ errorMessage: "First and last names are required." });
-    }
     const employee = await employeeModel.findOneAndUpdate(
       { id: req.body.id },
       updatedEmployee,
@@ -91,11 +91,21 @@ const getEmployee = async (req, res) => {
     if (!employee) {
       return res.status(400).send("User not found");
     }
-    res.json(employee);
+    const modifiedUser = {
+      ...employee.toObject(),
+      fullName: employee.fullName, // Add a new field dynamically
+    };
+
+    res.json(modifiedUser);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
 };
+// for filter
+// const employee = await employeeModel .where('firsName').equals("Kabilan").where("age").lt(85).limit(1)
+// for populate
+// const employee = await employeeModel .where('firsName').equals("Kabilan").where("age").lt(85).limit(1).populate("bestfriend")
+// here details of employee will populate in bestfriend column if it has the same object id as employee thus making the join easier
 
 module.exports = {
   getAllEmployees,
