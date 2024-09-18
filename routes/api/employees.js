@@ -6,9 +6,11 @@ router
   .route("/")
   .get(employeeController.getAllEmployees)
   .post(employeeController.createNewEmployee)
-  .put(employeeController.updateEmployee)
-  .delete(employeeController.deleteEmployee);
+  .put(employeeController.updateEmployee);
 
-router.route("/:id").get(employeeController.getEmployee);
+router
+  .route("/:id")
+  .get(employeeController.getEmployee)
+  .delete(employeeController.deleteEmployee);
 
 module.exports = router;
