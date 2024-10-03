@@ -1,4 +1,4 @@
-const employeeModel = require("../model/employeeSchema");
+const employeeModel = require("../model/employerSchema");
 
 const getAllEmployees = async (req, res) => {
   try {
@@ -74,7 +74,7 @@ const updateEmployee = async (req, res) => {
 const deleteEmployee = async (req, res) => {
   try {
     const employee = await employeeModel.findOneAndDelete({
-      id: req.params.id,
+      id: req.body.id,
     });
     if (!employee) {
       return res.status(400).send("employee not found");

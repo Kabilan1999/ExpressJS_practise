@@ -15,6 +15,7 @@ app.use(express.json()); // To handle json data
 connectToEmployeeDb();
 app.use("/", express.static(path.join(__dirname, "./assets")));
 app.use("/employees", require("./routes/api/employees"));
+app.use("/admin", require("./routes/api/admin"));
 app.use("/", require("./routes/root"));
 
 app.all("*", (req, res) => {
